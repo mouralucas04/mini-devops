@@ -15,6 +15,10 @@ function getTaskById(id: string): Task | undefined {
 
 export const tasksRouter = Router();
 
+tasksRouter.get('/', (req, res) => {
+    res.json(tasks);
+});
+
 tasksRouter.get('/:id', (req, res) => {
     const task = getTaskById(req.params.id);
     if (!task) {
