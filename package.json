@@ -2,11 +2,14 @@
   "name": "mini-devops",
   "version": "1.0.0",
   "description": "Esse projeto tem como objetivo fazer o aluno praticar o que vem aprendendo na faculdade e no trabalho.",
-  "main": "index.js",
+  "main": "dist/server.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
