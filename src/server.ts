@@ -1,7 +1,7 @@
-import app from './app';
+import { createApp } from './app';
 
 const PORT = Number(process.env.PORT) || 3000;
 
-app.listen(PORT, () => {
+createApp().listen(PORT, () => {
   console.log(`Servidor ouvindo na porta ${PORT}`);
 });

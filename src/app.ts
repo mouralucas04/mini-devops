@@ -1,16 +1,18 @@
-import express from 'express';
-import { tasksRouter } from './tasks';
+import express, { type Express } from 'express';
+import { createTasksRouter } from './tasks';
 
-const app = express();
-app.use(express.json());
-app.use('/tasks', tasksRouter);
+export function createApp(): Express {
+  const app = express();
+  app.use(express.json());
+  app.use('/tasks', createTasksRouter());
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
+  app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+  });
 
-app.get('/hello/:name', (req, res) => {
-  res.json({ message: `Olá, ${req.params.name}!` });
-});
+  app.get('/hello/:name', (req, res) => {
+    res.json({ message: `Olá, ${req.params.name}!` });
+  });
 
-export default app;
+  return app;
+}
