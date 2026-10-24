@@ -9,4 +9,6 @@
 
 - [ ] `npm run lint`
 - [ ] `npm run format:check`
+- [ ] `npm test`
+- [ ] `npm run typecheck`
 - [ ] `npm run build`
