@@ -13,6 +13,13 @@ function getTaskById(id: string): Task | undefined {
     return tasks.find(task => task.id === parseInt(id));
 }
 
+function readField(body: unknown, field: string): unknown {
+    if (typeof body !== 'object' || body === null) {
+        return undefined;
+    }
+    return (body as Record<string, unknown>)[field];
+}
+
 export const tasksRouter = Router();
 
 tasksRouter.get('/', (req, res) => {
@@ -29,14 +36,14 @@ tasksRouter.get('/:id', (req, res) => {
 });
 
 tasksRouter.post('/', (req, res) => {
-    const title: unknown = req.body?.title;
+    const title: unknown = readField(req.body, 'title');
     if (typeof title !== 'string' || title.trim() === '') {
         res.status(400).json({ error: 'Field "title" is required and must be a non-empty string' });
         return;
     }
     const task: Task = {
         id: nextId++,
-        title: req.body.title,
+        title: title,
         done: false
     };
     tasks.push(task);
