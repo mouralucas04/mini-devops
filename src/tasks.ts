@@ -66,3 +66,15 @@ tasksRouter.patch('/:id', (req, res) => {
   task.done = done;
   res.json(task);
 });
+
+if (process.env.FEATURE_DELETE_TASK === 'true') {
+  tasksRouter.delete('/:id', (req, res) => {
+    const index = tasks.findIndex((task) => task.id === parseInt(req.params.id));
+    if (index === -1) {
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+    tasks.splice(index, 1);
+    res.status(204).end();
+  });
+}
