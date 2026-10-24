@@ -29,6 +29,11 @@ tasksRouter.get('/:id', (req, res) => {
 });
 
 tasksRouter.post('/', (req, res) => {
+    const title: unknown = req.body?.title;
+    if (typeof title !== 'string' || title.trim() === '') {
+        res.status(400).json({ error: 'Field "title" is required and must be a non-empty string' });
+        return;
+    }
     const task: Task = {
         id: nextId++,
         title: req.body.title,
