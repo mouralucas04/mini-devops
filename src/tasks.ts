@@ -38,11 +38,9 @@ tasksRouter.get('/:id', (req, res) => {
 tasksRouter.post('/', (req, res) => {
   const title: unknown = readField(req.body, 'title');
   if (typeof title !== 'string' || title.trim() === '') {
-    res
-      .status(400)
-      .json({
-        error: 'Field "title" is required and must be a non-empty string',
-      });
+    res.status(400).json({
+      error: 'Field "title" is required and must be a non-empty string',
+    });
     return;
   }
   const task: Task = {
@@ -52,4 +50,19 @@ tasksRouter.post('/', (req, res) => {
   };
   tasks.push(task);
   res.status(201).json(task);
+});
+
+tasksRouter.patch('/:id', (req, res) => {
+  const task = getTaskById(req.params.id);
+  if (!task) {
+    res.status(404).json({ error: 'Task not found' });
+    return;
+  }
+  const done: unknown = readField(req.body, 'done');
+  if (typeof done !== 'boolean') {
+    res.status(400).json({ error: 'Field "done" must be true or false' });
+    return;
+  }
+  task.done = done;
+  res.json(task);
 });
