@@ -29,4 +29,12 @@ describe('tasks routes', () => {
       done: false,
     });
   });
+
+  it('returns 400 for a malformed id', async () => {
+    await request(app).post('/tasks').send({ title: 'study jest' });
+
+    const response = await request(app).get('/tasks/1abc');
+
+    expect(response.status).toBe(400);
+  });
 });
