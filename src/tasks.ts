@@ -13,12 +13,20 @@ function readField(body: unknown, field: string): unknown {
   return (body as Record<string, unknown>)[field];
 }
 
+function parseId(id: string): number | undefined {
+  if (id.trim() === '' || !Number.isInteger(Number(id))) {
+    return undefined;
+  }
+  const parsedId = Number(id);
+  return parsedId;
+}
+
 export function createTasksRouter(): Router {
   const tasks: Task[] = [];
   let nextId = 1;
 
-  function getTaskById(id: string): Task | undefined {
-    return tasks.find((task) => task.id === parseInt(id));
+  function getTaskById(id: number): Task | undefined {
+    return tasks.find((task) => task.id === id);
   }
 
   const router = Router();
@@ -28,7 +36,12 @@ export function createTasksRouter(): Router {
   });
 
   router.get('/:id', (req, res) => {
-    const task = getTaskById(req.params.id);
+    const id = parseId(req.params.id);
+    if (id === undefined) {
+      res.status(400).json({ error: 'Id is invalid' });
+      return;
+    }
+    const task = getTaskById(id);
     if (!task) {
       res.status(404).json({ error: 'Task not found' });
       return;
@@ -54,7 +67,12 @@ export function createTasksRouter(): Router {
   });
 
   router.patch('/:id', (req, res) => {
-    const task = getTaskById(req.params.id);
+    const id = parseId(req.params.id);
+    if (id === undefined) {
+      res.status(400).json({ error: 'Id is invalid' });
+      return;
+    }
+    const task = getTaskById(id);
     if (!task) {
       res.status(404).json({ error: 'Task not found' });
       return;
