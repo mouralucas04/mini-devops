@@ -32,6 +32,18 @@ describe('tasks routes', () => {
         done: false,
       });
     });
+
+    it('rejects a request without title', async () => {
+      const response = await request(app).post('/tasks').send({});
+
+      expect(response.status).toBe(400);
+    })
+
+    it('rejects a request without body', async () => {
+      const response = await request(app).post('/tasks')
+
+      expect(response.status).toBe(400);
+    })
   });
 
   describe('GET /tasks/:id', () => {
