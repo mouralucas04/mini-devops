@@ -73,4 +73,66 @@ describe('tasks routes', () => {
       expect(response.status).toBe(400);
     });
   });
+
+  describe('PATCH /tasks/:id', () => {
+    it('completes a task', async () => {
+      await request(app).post('/tasks').send({ title: 'study jest' });
+
+      const patchResponse = await request(app).patch('/tasks/1').send({
+        done: true,
+      });
+
+      const getResponse = await request(app).get('/tasks/1');
+
+      expect(patchResponse.status).toBe(200);
+      expect(getResponse.body).toMatchObject({
+        id: 1,
+        title: 'study jest',
+        done: true,
+      });
+    });
+
+    it('rejects a body with non boolean done field', async () => {
+      await request(app).post('/tasks').send({ title: 'study jest' });
+
+      const patchResponse = await request(app).patch('/tasks/1').send({
+        done: 'true',
+      });
+
+      const getResponse = await request(app).get('/tasks/1');
+
+      expect(patchResponse.status).toBe(400);
+      expect(getResponse.body).toMatchObject({
+        id: 1,
+        title: 'study jest',
+        done: false,
+      });
+    });
+
+    it('rejects a non existing task', async () => {
+      const patchResponse = await request(app).patch('/tasks/1').send({
+        done: true,
+      });
+
+      expect(patchResponse.status).toBe(404);
+    });
+  });
+
+  describe('DELETE /tasks/:id', () => {
+    it('deletes an existing task', async () => {
+      await request(app).post('/tasks').send({ title: 'study jest' });
+
+      const deleteResponse = await request(app).delete('/tasks/1');
+      const getResponse = await request(app).get('/tasks/1');
+
+      expect(deleteResponse.status).toBe(204);
+      expect(getResponse.status).toBe(404);
+    });
+
+    it('does not delete a non existing task', async () => {
+      const responseDelete = await request(app).delete('/tasks/1');
+
+      expect(responseDelete.status).toBe(404);
+    });
+  });
 });
