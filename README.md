@@ -1,4 +1,5 @@
 # Nome do curso
+[![CI](https://github.com/mouralucas04/mini-devops/actions/workflows/ci.yml/badge.svg)](https://github.com/mouralucas04/mini-devops/actions/workflows/ci.yml)
 
 ## Por que fazer
 
