@@ -25,7 +25,7 @@ describe('tasks routes', () => {
         .post('/tasks')
         .send({ title: 'study jest' });
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
       expect(response.body).toEqual({
         id: 1,
         title: 'study jest',
